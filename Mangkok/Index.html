@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mangkok | Pinoy Bowl Express</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="icon">🏠</span>
+      <span class="brand-name">AFFORDAMEALS</span>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="#menu">Menu</a>
+      <a href="#others">Others</a>
+    </nav>
+  </header>
+ 
+  <main class="hero">
+    <div class="hero-text">
+      <h1>MANGKOK</h1>
+      <h2>PINOY BOWL<br>EXPRESS</h2>
+    </div>
+    <div class="hero-image">
+      <img src="Mangkok.jpg" alt="Mangkok Pinoy Bowl Express Logo">
+    </div>
+  </main>
+ 
+  <!-- 2D Transform Example -->
+  <section style="text-align:center; margin:40px;">
+    <button style="padding:12px 24px; font-size:16px; cursor:pointer; transform:scale(1); transition:transform 0.3s;"
+            onmouseover="this.style.transform='scale(1.1)'"
+            onmouseout="this.style.transform='scale(1)'">
+      Hover Me (2D Transform)
+    </button>
+  </section>
+ 
+  <!-- 3D Transform Example -->
+  <section style="text-align:center; margin:40px; perspective:1000px;">
+    <div style="display:inline-block; width:200px; height:120px; background:#e36414; color:#fff; line-height:120px;
+                transform:rotateY(0); transition:transform 0.6s;"
+         onmouseover="this.style.transform='rotateY(180deg)'"
+         onmouseout="this.style.transform='rotateY(0)'">
+      Flip Me (3D Transform)
+    </div>
+  </section>
+ 
+  <!-- Contact Form -->
+  <section id="contact" style="text-align:center; margin:40px auto; max-width:400px; padding:20px;">
+    <h3>Contact Us</h3>
+    <form>
+      <input type="text" placeholder="Your Name" required style="width:100%; margin-bottom:10px; padding:10px;">
+      <input type="email" placeholder="Your Email" required style="width:100%; margin-bottom:10px; padding:10px;">
+      <textarea rows="4" placeholder="Your Message" style="width:100%; margin-bottom:10px; padding:10px;"></textarea>
+      <button type="submit" style="padding:10px 20px;">Send</button>
+    </form>
+  </section>
+</body>
+</html>

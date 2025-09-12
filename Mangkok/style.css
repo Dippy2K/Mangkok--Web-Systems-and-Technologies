@@ -1,0 +1,124 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f5f0d7;
+}
+ 
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #f5f0d7;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+ 
+.brand {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: #e36414;
+  font-size: 14px;
+}
+ 
+.brand .icon {
+  margin-right: 8px;
+  font-size: 16px;
+}
+ 
+nav a {
+  margin-left: 30px;
+  text-decoration: none;
+  color: #a94442;
+  font-weight: 500;
+  font-size: 14px;
+}
+ 
+nav a:hover {
+  color: #7a2a2a;
+  transform: scale(1.1); /* 2D transform */
+}
+ 
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 80px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+ 
+.hero-text {
+  flex: 1;
+}
+ 
+.hero-text h1 {
+  font-size: 64px;
+  font-weight: bold;
+  margin: 0;
+  color: #e36414;
+}
+ 
+.hero-text h2 {
+  font-size: 28px;
+  font-weight: normal;
+  margin-top: 20px;
+  line-height: 1.4;
+  color: #a94442;
+  letter-spacing: 1px;
+}
+ 
+.hero-image {
+  flex: 1;
+  text-align: right;
+  transform: rotateY(5deg); /* 3D transform */
+}
+ 
+.hero-image img {
+  max-width: 420px;
+  height: auto;
+}
+ 
+.order-form {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  gap: 10px;
+}
+ 
+.order-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+ 
+.order-form button {
+  padding: 10px;
+  background-color: #e36414;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+ 
+.order-form button:hover {
+  background-color: #a94442;
+  transform: scale(1.05); /* 2D transform on hover */
+}
+ 
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+  }
+  .hero-image {
+    text-align: center;
+    margin-top: 20px;
+    transform: none; /* remove 3D tilt on small screens */
+  }
+  nav {
+    display: none; /* mobile menu hidden for now */
+  }
+}
