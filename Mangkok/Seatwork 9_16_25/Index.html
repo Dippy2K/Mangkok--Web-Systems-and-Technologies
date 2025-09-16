@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mangkok | Pinoy Bowl Express</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="icon">🏠</span>
+      <span class="brand-name">AFFORDAMEALS</span>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="#menu">Menu</a>
+      <a href="#others">Others</a>
+    </nav>
+  </header>
+
+  <main class="hero">
+    <div class="hero-text">
+      <h1>MANGKOK</h1>
+      <h2>PINOY BOWL<br>EXPRESS</h2>
+    </div>
+    <div class="hero-image">
+      <img id="toggleImage" src="Mangkok.jpg" alt="Mangkok Pinoy Bowl Express Logo">
+    </div>
+  </main>
+
+  <section class="js-section">
+    <button onclick="alert('Welcome to Mangkok!')">Click Me (Alert)</button>
+  </section>
+
+  <section class="js-section">
+    <button onclick="document.body.style.backgroundColor='#e6ffe6'">Change Background</button>
+  </section>
+
+  <section class="js-section">
+    <button onclick="toggleLogo()">Toggle Logo</button>
+  </section>
+
+  <section id="contact" class="contact-box">
+    <h3>Contact Us</h3>
+    <form onsubmit="return validateForm()">
+      <input id="name" type="text" placeholder="Your Name" required>
+      <input id="email" type="email" placeholder="Your Email" required>
+      <textarea id="message" rows="4" placeholder="Your Message"></textarea>
+      <button type="submit">Send</button>
+    </form>
+  </section>
+
+  <section class="js-section">
+    <h3>Current Time:</h3>
+    <p id="clock"></p>
+  </section>
+
+  <script>
+    function toggleLogo() {
+      let img = document.getElementById("toggleImage");
+      if (img.src.includes("Mangkok.jpg")) {
+        img.src = "logo2.jpg";
+      } else {
+        img.src = "Mangkok.jpg";
+      }
+    }
+    function validateForm() {
+      let name = document.getElementById("name").value;
+      let email = document.getElementById("email").value;
+      let message = document.getElementById("message").value;
+      if (name === "" || email === "" || message === "") {
+        alert("All fields must be filled out!");
+        return false;
+      }
+      alert("Form submitted successfully!");
+      return true;
+    }
+    function updateClock() {
+      let now = new Date();
+      document.getElementById("clock").textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</body>
+</html>
