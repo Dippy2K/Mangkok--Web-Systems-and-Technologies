@@ -122,3 +122,41 @@ form button:hover {
   padding: 15px;
   margin-top: 40px;
 }
+
+@media (max-width: 768px) {
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  nav a {
+    margin: 5px 10px 0 0;
+    font-size: 14px;
+  }
+
+  .hero-text h1 {
+    font-size: 28px;
+  }
+
+  .hero-text h2 {
+    font-size: 16px;
+  }
+
+  .form-section {
+    margin: 20px;
+    padding: 15px;
+  }
+
+  form input,
+  form textarea,
+  form button {
+    width: 100%;
+    font-size: 14px;
+  }
+}

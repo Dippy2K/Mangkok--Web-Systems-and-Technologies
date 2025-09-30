@@ -160,16 +160,39 @@ nav a:hover {
 }
 
 @media (max-width: 768px) {
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  nav a {
+    margin: 5px 10px 0 0;
+    font-size: 14px;
+  }
+
   .hero {
     flex-direction: column;
     text-align: center;
+    padding: 40px 20px;
   }
+
   .hero-image {
     text-align: center;
     margin-top: 20px;
     transform: none;
   }
-  nav {
-    display: none;
+
+  .hero-text h1 {
+    font-size: 36px;
+  }
+
+  .hero-text h2 {
+    font-size: 18px;
   }
 }
