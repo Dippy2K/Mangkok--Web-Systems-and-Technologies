@@ -1,0 +1,162 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #fafafa;
+  color: #333;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #d32f2f;
+  color: white;
+  padding: 10px 20px;
+}
+
+.topbar .brand {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.topbar .brand .icon {
+  margin-right: 8px;
+}
+
+.topbar nav a {
+  color: white;
+  text-decoration: none;
+  margin-left: 15px;
+  font-size: 15px;
+}
+
+.topbar nav a:hover {
+  text-decoration: underline;
+}
+
+.hero {
+  background: url("Mangkok.jpg") center/cover no-repeat;
+  color: white;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.hero-text h1 {
+  font-size: 40px;
+  margin: 0;
+}
+
+.hero-text h2 {
+  font-size: 20px;
+  margin: 5px 0 15px;
+}
+
+.form-section {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.form-section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+form input,
+form textarea {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+form textarea {
+  resize: none;
+  height: 100px;
+}
+
+form button {
+  padding: 12px;
+  background: #d32f2f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background: #b71c1c;
+}
+
+.thankyou-section {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.thankyou-section h1 {
+  font-size: 36px;
+  color: #d32f2f;
+}
+
+.footer {
+  background: #d32f2f;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  margin-top: 40px;
+}
+
+@media (max-width: 768px) {
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  nav a {
+    margin: 5px 10px 0 0;
+    font-size: 14px;
+  }
+
+  .hero-text h1 {
+    font-size: 28px;
+  }
+
+  .hero-text h2 {
+    font-size: 16px;
+  }
+
+  .form-section {
+    margin: 20px;
+    padding: 15px;
+  }
+
+  form input,
+  form textarea,
+  form button {
+    width: 100%;
+    font-size: 14px;
+  }
+}
