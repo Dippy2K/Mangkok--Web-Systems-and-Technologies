@@ -203,7 +203,7 @@
   </footer>
  
   <script>
-    // --- Prices stored in an object ---
+    // Variables
     const foodPrices = {
       "Pork Sisig": 119,
       "Beef Caldereta": 159,
@@ -212,10 +212,10 @@
       "Pork Belly": 120
     };
  
-    // Cart array
+    // Operators
     let cart = [];
  
-    // Add item or increase quantity
+    // Strings
     function addToCart(foodName) {
       const existingItem = cart.find(item => item.name === foodName);
       if (existingItem) {
@@ -227,7 +227,7 @@
       displayCart();
     }
  
-    // Decrease quantity
+    // Conditional Statement
     function decreaseItem(foodName) {
       const item = cart.find(i => i.name === foodName);
       if (item) {
@@ -247,7 +247,7 @@
       displayCart();
     }
  
-    // Display items in cart
+    // Loops
     function displayCart() {
       const cartItems = document.getElementById("cartItems");
       cartItems.innerHTML = "";
