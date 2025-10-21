@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #f5f0d7;
+  background-color: #FCF8ED;
 }
 
 .topbar {
@@ -9,7 +9,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 20px 40px;
-  background-color: #f5f0d7;
+  background-color: #FCF8ED;
   max-width: 1200px;
   margin: 0 auto;
 }
