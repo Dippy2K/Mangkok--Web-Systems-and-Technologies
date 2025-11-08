@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Mangkok | Products</title>
+    <link rel="stylesheet" href="Products.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- MODAL / TOAST CSS (Kept inline for simplicity) --- */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .order-modal {
+            background-color: #fffdf7;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        .order-modal h2 {
+            color: #e36414;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .order-modal label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+        .order-modal input, .order-modal textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #f2c48d;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        .order-summary-details {
+            background-color: #FCF8ED;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px dashed #e36414;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #a94442;
+            border: none;
+            background: none;
+        }
+        .final-submit-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #e36414;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .final-submit-btn:hover {
+            background-color: #c75010;
+        }
+
+        /* --- Floating Notification Styles --- */
+        #notificationContainer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2000;
+        }
+        .toast {
+            background-color: #38761d;
+            color: white;
+            padding: 15px 25px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.5s, transform 0.5s;
+            transform: translateX(100%);
+            min-width: 250px;
+            font-size: 15px;
+        }
+        .toast.error {
+            background-color: #a94442;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <div id="notificationContainer"></div>
+    
+    <header class="topbar">
+        <div class="brand">
+            <span class="icon">🍜</span>
+            <span class="brand-name">AFFORDAMEALS</span>
+        </div>
+        <nav>
+            <a href="Home.html">Home</a>
+            <a href="About.html">About us</a>
+            <a href="Products.html" class="active">Products</a> 
+            <a href="Gallery.html">Gallery</a>
+            <a href="Contact.html">Contact us</a>
+            <a href="#" id="cartLink"><i class="fas fa-shopping-cart"></i> Cart (<span id="cartCount">0</span>)</a>
+        </nav>
+    </header>
+    
+    <main class="hero menu-page-hero">
+        <div class="hero-text">
+            <h1>Our Menu</h1>
+            <h2>Pinoy Food Bowl Meals</h2>
+            <p>Explore our wide selection of mouth-watering dishes</p>
+        </div>
+    </main>
+
+    <section class="filter-controls">
+        <div class="container">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-category="all">All Items</button>
+                <button class="filter-btn" data-category="main dish">Main Dishes</button>
+                <button class="filter-btn" data-category="fast food">Fast Food</option>
+                <button class="filter-btn" data-category="drinks">Drinks</option>
+            </div>
+        </div>
+    </section>
+    
+    <section class="menu-page">
+        <div class="container">
+            <div class="food-grid" id="menuFoods">
+                </div>
+        </div>
+    </section>
+    
+    <section class="promo">
+        <h3 style="text-align:center;">Watch Our Promo Video</h3>
+        <div style="text-align:center;">
+            <video controls width="450">
+                <source src="FINAL FINAL FINAL LANSCAPED.mp4" type="video/mp4">
+            </video>
+        </div>
+    </section>
+    
+    <footer class="footer">
+        <p>© 2025 Mangkok Pinoy Food Bowl Meals</p>
+    </footer>
+
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h2>Your Cart</h2>
+                <span class="close-btn" id="closeCart">&times;</span>
+            </div>
+            <div class="cart-body">
+                <div id="cartItems">
+                    <p class="empty-cart-message">Your cart is empty</p>
+                </div>
+                <div class="cart-footer">
+                    <div class="cart-total">
+                        <h3>Total: ₱<span id="cartTotal">0.00</span></h3>
+                    </div>
+                    <button class="final-submit-btn" id="checkoutBtn" onclick="showOrderForm()">Proceed to Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="checkoutOverlay" class="overlay">
+        <div class="order-modal">
+            <span class="close-btn" onclick="document.getElementById('checkoutOverlay').style.display='none';">&times;</span>
+            <h2>Finalize Your Order Details</h2>
+            
+            <div id="modalOrderSummary" class="order-summary-details">
+                </div>
+
+            <form id="finalOrderForm" onsubmit="event.preventDefault(); submitFinalOrder();">
+                <label for="customerName">Full Name:</label>
+                <input type="text" id="customerName" name="customerName" required>
+
+                <label for="customerPhone">Phone Number:</label>
+                <input type="tel" id="customerPhone" name="customerPhone" required>
+
+                <label for="deliveryAddress">Delivery Address:</label>
+                <textarea id="deliveryAddress" name="deliveryAddress" required></textarea>
+                
+                <label for="orderNotes">Special Notes (Optional):</label>
+                <textarea id="orderNotes" name="orderNotes"></textarea>
+                
+                <input type="hidden" id="cartData" name="cartData">
+                <input type="hidden" id="orderTotal" name="orderTotal">
+
+                <button type="submit" class="final-submit-btn">Confirm & Submit Order</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        const foodData = [
+            { id: 1, name: "Pork Sisig", price: 119.00, category: "main dish", image: "Pork Sisig.jpg", description: "Classic crunchy pork dish with onions and chili" },
+            { id: 2, name: "Beef Caldereta", price: 159.00, category: "main dish", image: "Beef Caldereta.jpg", description: "Beef stewed in tomato sauce with potatoes and carrots" },
+            { id: 3, name: "Pritong Chikee 1pc", price: 139.00, category: "main dish", image: "Pritong Chikee.jpg", description: "One piece crispy fried chicken with gravy" },
+            { id: 4, name: "Pritong Chikee 2pc", price: 199.00, category: "main dish", image: "Pritong Chikee.jpg", description: "Two pieces crispy fried chicken with gravy" },
+            { id: 5, name: "Pork Belly", price: 120.00, category: "main dish", image: "Pork Belly.jpg", description: "Crispy grilled pork belly slices" },
+            { id: 6, name: "Soda Drink", price: 35.00, category: "drinks", image: "Soda.jpg", description: "Your favorite canned soda drink" }
+        ];
+
+        let cart = [];
+
+        const cartModal = document.getElementById('cartModal');
+        const closeCart = document.getElementById('closeCart');
+        const cartItems = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const cartLink = document.getElementById('cartLink');
+        const cartCountElement = document.getElementById('cartCount');
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCartFromLocalStorage();
+            displayMenuFoods();
+            setupFilterButtons();
+
+            if (cartLink) {
+                cartLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openCart();
+                });
+            }
+            if (closeCart) closeCart.addEventListener('click', closeCartModal);
+            
+            window.addEventListener('click', function(event) {
+                if (event.target === cartModal) {
+                    closeCartModal();
+                }
+            });
+        });
+
+        // --- UTILITY FUNCTIONS ---
+
+        function saveCartToLocalStorage() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function loadCartFromLocalStorage() {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                const loadedCart = JSON.parse(savedCart);
+                cart = loadedCart.map(item => {
+                    const foodMatch = foodData.find(f => f.name === item.name || f.id === item.id);
+                    if (foodMatch) {
+                        return {
+                            id: foodMatch.id,
+                            name: foodMatch.name,
+                            price: foodMatch.price,
+                            quantity: item.quantity || item.qty || 1
+                        };
+                    }
+                    return null;
+                }).filter(item => item !== null);
+            }
+            updateCartUI();
+        }
+        
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('notificationContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            
+            setTimeout(() => { toast.classList.add('show'); }, 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                toast.addEventListener('transitionend', () => toast.remove());
+            }, 3000);
+        }
+        
+        // --- CART LOGIC ---
+        
+        function updateQuantity(foodId, change) {
+            const item = cart.find(item => item.id === foodId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(foodId);
+                    showToast(`Removed ${item.name} from cart.`, 'error');
+                } else {
+                    saveCartToLocalStorage();
+                    updateCartUI();
+                    showToast(`Quantity of ${item.name} updated.`);
+                }
+            }
+        }
+        
+        function removeFromCart(foodId) {
+            const item = cart.find(i => i.id === foodId);
+            cart = cart.filter(item => item.id !== foodId);
+            saveCartToLocalStorage();
+            updateCartUI();
+            showToast(`Removed ${item.name} from cart.`, 'error');
+        }
+        
+        function addToCart(foodName) {
+            const food = foodData.find(item => item.name === foodName);
+
+            if (!food) {
+                showToast(`Error: ${foodName} not found in menu.`, 'error');
+                return;
+            }
+
+            const existingItem = cart.find(item => item.id === food.id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: food.id,
+                    name: food.name,
+                    price: food.price,
+                    quantity: 1
+                });
+            }
+            
+            saveCartToLocalStorage();
+            updateCartUI();
+            showToast(`Added ${food.name} to cart!`);
+        }
+
+        function updateCartUI() {
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            
+            if (cartCountElement) cartCountElement.textContent = totalItems; 
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p class="empty-cart-message">Your cart is empty</p>';
+                cartTotal.textContent = '0.00';
+                return;
+            }
+            
+            cartItems.innerHTML = '';
+            let total = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <div class="item-info">
+                        <h4>${item.name}</h4>
+                        <p class="item-price">₱${item.price.toFixed(2)} each</p>
+                    </div>
+                    <div class="item-quantity">
+                        <button class="quantity-btn minus" data-id="${item.id}" onclick="updateQuantity(${item.id}, -1)">-</button>
+                        <span class="quantity">${item.quantity}</span>
+                        <button class="quantity-btn plus" data-id="${item.id}" onclick="updateQuantity(${item.id}, 1)">+</button>
+                    </div>
+                    <p class="item-total">₱${itemTotal.toFixed(2)}</p>
+                    <button class="remove-item" data-id="${item.id}" onclick="removeFromCart(${item.id})">×</button>
+                `;
+                
+                cartItems.appendChild(cartItem);
+            });
+            
+            cartTotal.textContent = total.toFixed(2);
+        }
+
+        function openCart() {
+            cartModal.style.display = 'flex';
+            updateCartUI();
+        }
+
+        function closeCartModal() {
+            cartModal.style.display = 'none';
+        }
+        
+        // --- CHECKOUT / FORM LOGIC (PHP READY) ---
+        
+        function showOrderForm() {
+            if (cart.length === 0) {
+                showToast("Your cart is empty! Add items to place an order.", 'error'); 
+                return;
+            }
+
+            closeCartModal(); 
+            
+            const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            // 1. Prepare Cart Data for submission
+            const cartDataString = JSON.stringify(cart);
+            document.getElementById('cartData').value = cartDataString;
+            document.getElementById('orderTotal').value = totalAmount.toFixed(2);
+            
+            // 2. Populate Modal Summary
+            let modalSummaryHTML = `<p><strong>Items:</strong></p>`;
+            modalSummaryHTML += `<ul style="list-style: none; padding: 0;">`;
+            cart.forEach(item => {
+                modalSummaryHTML += `<li>${item.quantity}× ${item.name} (₱${(item.price * item.quantity).toFixed(2)})</li>`;
+            });
+            modalSummaryHTML += `</ul>`;
+            modalSummaryHTML += `<p><b>FINAL TOTAL: ₱${totalAmount.toFixed(2)}</b></p>`;
+            
+            document.getElementById("modalOrderSummary").innerHTML = modalSummaryHTML;
+            
+            // 3. Display the Final Order Modal
+            document.getElementById('checkoutOverlay').style.display = 'flex';
+        }
+
+        function submitFinalOrder() {
+            // Client-side validation (kept for fast feedback)
+            if (!document.getElementById('customerName').value || !document.getElementById('customerPhone').value || !document.getElementById('deliveryAddress').value) {
+                showToast("Please fill in all required customer details.", 'error');
+                return;
+            }
+            
+            const form = document.getElementById('finalOrderForm');
+            const formData = new FormData(form);
+
+            const name = formData.get('customerName');
+            const total = formData.get('orderTotal');
+
+            // --- AJAX Call to PHP Script (Submits to database) ---
+            fetch('submit_order.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('checkoutOverlay').style.display = 'none';
+                document.getElementById('finalOrderForm').reset();
+
+                if (data.success) {
+                    // Success! Show confirmation and clear cart
+                    showToast(`Order confirmed, ${name}! Total: ₱${total}. Thank you!`, 'success'); 
+                    
+                    cart = [];
+                    saveCartToLocalStorage();
+                    updateCartUI();
+                    
+                } else {
+                    // Failure! Show error message returned by PHP
+                    showToast(`Order failed: ${data.message}`, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Submission Error:', error);
+                document.getElementById('checkoutOverlay').style.display = 'none';
+                showToast("Network error. Could not connect to the server.", 'error');
+            });
+        }
+
+        // --- MENU DISPLAY LOGIC ---
+        function displayMenuFoods(category = 'all') {
+            const menuFoods = document.getElementById('menuFoods');
+            if (!menuFoods) return;
+            
+            menuFoods.innerHTML = '';
+            
+            const filteredFoods = category === 'all' 
+                ? foodData 
+                : foodData.filter(food => food.category === category);
+            
+            if (filteredFoods.length === 0) {
+                 menuFoods.innerHTML = `<p style="text-align:center; font-style: italic; color: #a94442;">No items found in this category.</p>`;
+                 return;
+            }
+            
+            filteredFoods.forEach(food => {
+                const foodCard = document.createElement('div');
+                foodCard.className = 'food-card';
+                foodCard.innerHTML = `
+                    <img src="${food.image}" alt="${food.name}">
+                    <div class="food-info">
+                        <h3>${food.name}</h3>
+                        <p>${food.description}</p>
+                        <span class="price">₱${food.price.toFixed(2)}</span>
+                        <button class="add-to-cart" onclick="addToCart('${food.name}')">Add to Cart</button>
+                    </div>
+                `;
+                menuFoods.appendChild(foodCard);
+            });
+        }
+
+        function setupFilterButtons() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    const category = this.getAttribute('data-category');
+                    displayMenuFoods(category);
+                });
+            });
+        }
+    </script>
+</body>
+</html>

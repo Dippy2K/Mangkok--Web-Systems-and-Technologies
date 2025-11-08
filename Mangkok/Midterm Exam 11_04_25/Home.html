@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mangkok | Pinoy Bowl Express</title>
+  <link rel="stylesheet" href="Home.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="icon">🏠</span>
+      <span class="brand-name">AFFORDAMEALS</span>
+    </div>
+    <nav>
+      <a href="Home.html" class="active">Home</a>
+      <a href="About.html">About us</a>
+      <a href="Products.html">Products</a>
+      <a href="Gallery.html">Gallery</a>
+      <a href="Contact.html">Contact us</a>
+      <a href="#" id="cartLink" class="cart-nav-link"><i class="fas fa-shopping-cart"></i> Cart (<span id="cartCount">0</span>)</a>
+    </nav>
+  </header>
+ 
+  <main class="hero">
+    <div class="hero-text">
+      <h1>MANGKOK</h1>
+      <h2>PINOY BOWL<br>EXPRESS</h2>
+    </div>
+    <div class="hero-image">
+      <img src="Mangkok.png" alt="Mangkok Pinoy Bowl Express Logo">
+    </div>
+  </main>
+
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-content">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <span class="close-btn" id="closeCart">&times;</span>
+        </div>
+        <div class="cart-body">
+            <div id="cartItems">
+                <p class="empty-cart-message">Your cart is empty</p>
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <h3>Total: ₱<span id="cartTotal">0.00</span></h3>
+                </div>
+                <a href="Products.html" class="final-submit-btn">Go to Menu to Order</a>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2025 Mangkok Pinoy Food Bowl Meals</p>
+  </footer>
+  
+  <script>
+    // --- BASIC CART FUNCTIONS FOR DISPLAY ONLY ---
+    let cart = [];
+    
+    function loadCartFromLocalStorage() {
+        const savedCart = localStorage.getItem('cart');
+        if (savedCart) {
+            cart = JSON.parse(savedCart);
+        }
+    }
+    
+    function updateCartUI() {
+        const cartCountElement = document.getElementById('cartCount');
+        const cartTotalElement = document.getElementById('cartTotal');
+        const cartItemsList = document.getElementById('cartItems');
+        
+        const totalItems = cart.reduce((total, item) => total + (item.quantity || item.qty || 0), 0);
+        
+        if (cartCountElement) cartCountElement.textContent = totalItems;
+
+        if (cart.length === 0) {
+            if (cartItemsList) cartItemsList.innerHTML = '<p class="empty-cart-message">Your cart is empty</p>';
+            if (cartTotalElement) cartTotalElement.textContent = '0.00';
+            return;
+        }
+
+        let cartTotalAmount = 0;
+        let itemsHTML = '';
+        
+        cart.forEach(item => {
+            const qty = item.quantity || item.qty || 0;
+            const price = item.price || 0;
+            const itemTotal = price * qty;
+            cartTotalAmount += itemTotal;
+            
+            // Render simplified, read-only content
+            itemsHTML += `<div class="cart-item">
+                <div class="item-info"><h4>${item.name}</h4><p class="item-price">₱${price.toFixed(2)} each</p></div>
+                <div class="item-quantity"><span class="quantity">${qty}</span></div>
+                <p class="item-total">₱${itemTotal.toFixed(2)}</p>
+            </div>`;
+        });
+        
+        if (cartItemsList) cartItemsList.innerHTML = itemsHTML;
+        if (cartTotalElement) cartTotalElement.textContent = cartTotalAmount.toFixed(2);
+    }
+    
+    function openCart() {
+        const cartModal = document.getElementById('cartModal');
+        if (cartModal) {
+            loadCartFromLocalStorage();
+            updateCartUI();
+            cartModal.style.display = 'flex';
+        }
+    }
+
+    function closeCartModal() {
+        const cartModal = document.getElementById('cartModal');
+        if (cartModal) cartModal.style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        loadCartFromLocalStorage();
+        updateCartUI(); 
+        const cartLink = document.getElementById('cartLink');
+        const closeCart = document.getElementById('closeCart');
+        
+        if (cartLink) {
+            cartLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                openCart();
+            });
+        }
+        if (closeCart) closeCart.addEventListener('click', closeCartModal);
+        
+        window.addEventListener('click', function(event) {
+            const cartModal = document.getElementById('cartModal');
+            if (event.target === cartModal) {
+                closeCartModal();
+            }
+        });
+    });
+  </script>
+</body>
+</html>
