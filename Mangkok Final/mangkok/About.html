@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Mangkok | About Us</title>
+    <link rel="stylesheet" href="About.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="notificationContainer"></div>
+    
+    <header class="topbar" id="mainHeader">
+        <div class="brand">
+            <span class="icon">🍜</span>
+            <span class="brand-name">AFFORDAMEALS</span>
+        </div>
+        <nav>
+            <a href="Home.html">Home</a>
+            <a href="About.html" class="active">About us</a>
+            <a href="Products.html">Products</a>
+            <a href="Gallery.html">Gallery</a>
+            <a href="Contact.html">Contact us</a>
+            <a href="#" id="cartLink" class="cart-nav-link"><i class="fas fa-shopping-cart"></i> Cart (<span id="cartCount">0</span>)</a>
+        </nav>
+    </header>
+    
+    <main class="hero">
+        <div class="hero-text">
+            <h1>Our Story</h1>
+            <h2>Authentic Pinoy Food Bowl Meals</h2>
+        </div>
+    </main>
+    
+    <section class="content-about">
+        <div class="about-grid">
+            
+            <div class="about-text-column">
+                <h2>Who We Are</h2>
+                <p>
+                    At Mangkok, we bring you the Filipino flavors you crave—fast, fresh, and unbelievably affordable. Our commitment is simple: <strong>Sarap to the max, presyong chill!</strong> We specialize in classic Pinoy favorites served in convenient, hearty bowls.
+                </p>
+                <p>
+                    Try our bestsellers like <strong>Pork Sisig, Beef Caldereta, Pritong Chikee, and Pork Belly</strong>. Whether you need study fuel, a quick barkada lunch, or a satisfying late-night craving, Mangkok has a delicious bowl waiting for you.
+                </p>
+
+                <div class="mission-vision">
+                    <h3>Our Vision</h3>
+                    <p>To be the leading source of high-quality, authentic, and affordable Pinoy comfort food across the metro.</p>
+                </div>
+            </div>
+
+            <div class="about-video-column">
+                <h3>Watch Our Promo</h3>
+                <div class="video-container">
+                    <video controls>
+                        <source src="FINAL FINAL FINAL LANSCAPED.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+  
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-content">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <span class="close-btn" id="closeCart">&times;</span>
+        </div>
+        <div class="cart-body">
+            <div id="cartItems">
+                <p class="empty-cart-message">Your cart is empty</p>
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <h3>Total: ₱<span id="cartTotal">0.00</span></h3>
+                </div>
+                <button class="final-submit-btn" onclick="showOrderForm()">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+    <div id="checkoutOverlay" class="overlay">
+        <div class="order-modal">
+            <span class="close-btn" onclick="document.getElementById('checkoutOverlay').style.display='none';">&times;</span>
+            <h2>Finalize Your Order Details</h2>
+            <div id="modalOrderSummary" class="order-summary-details"></div>
+            
+            <form id="finalOrderForm" onsubmit="event.preventDefault(); submitFinalOrder();">
+                <label for="customerName">Full Name:</label>
+                <input type="text" id="customerName" name="customerName" required>
+                
+                <label for="customerPhone">Phone Number:</label>
+                <input type="tel" id="customerPhone" name="customerPhone" required>
+                
+                <label for="paymentMethod">Payment Method:</label>
+                <select id="paymentMethod" name="paymentMethod" required>
+                    <option value="" disabled selected>Select Payment Option</option>
+                    <option value="Cash/COD">Cash / COD</option>
+                    <option value="GCASH">GCASH</option>
+                    <option value="PAYMAYA">PAYMAYA</option>
+                    <option value="QRPH">QRPH</option>
+                    <option value="Debit/Credit Card">Debit/Credit Card (Master/Visa)</option>
+                </select>
+
+                <label for="deliveryAddress">Delivery Address:</label>
+                <textarea id="deliveryAddress" name="deliveryAddress" required></textarea>
+                
+                <label for="orderNotes">Special Notes (Optional):</label>
+                <textarea id="orderNotes" name="orderNotes"></textarea>
+                
+                <input type="hidden" id="cartData" name="cartData">
+                <input type="hidden" id="orderTotal" name="orderTotal">
+                
+                <button type="submit" class="final-submit-btn">Confirm & Submit Order</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Mangkok Pinoy Food Bowl Meals | AFFORDAMEALS</p>
+    </footer>
+
+  <script>
+    // --- SCROLL AND HOVER INTERACTIVITY LOGIC ---
+    const header = document.getElementById('mainHeader');
+    const scrollThreshold = 50; 
+
+    function handleScroll() {
+        if (window.scrollY > scrollThreshold) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    }
+    window.addEventListener('scroll', handleScroll);
+    
+    // --- DATA AND CART CORE LOGIC ---
+    const foodData = [
+        { id: 1, name: "Pork Sisig", price: 119.00 },
+        { id: 2, name: "Beef Caldereta", price: 159.00 },
+        { id: 3, name: "Pritong Chikee 1pc", price: 139.00 },
+        { id: 4, name: "Pritong Chikee 2pc", price: 199.00 },
+        { id: 5, name: "Pork Belly", price: 120.00 },
+        { id: 6, name: "Soda Drink", price: 35.00 }
+    ];
+    let cart = [];
+    
+    const cartModal = document.getElementById('cartModal');
+    const closeCart = document.getElementById('closeCart');
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
+    const cartLink = document.getElementById('cartLink');
+    const cartCountElement = document.getElementById('cartCount');
+
+
+    function saveCartToLocalStorage() {
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    function loadCartFromLocalStorage() {
+        const savedCart = localStorage.getItem('cart');
+        if (savedCart) {
+            const loadedCart = JSON.parse(savedCart);
+            cart = loadedCart.map(item => {
+                const foodMatch = foodData.find(f => f.name === item.name);
+                return {
+                    id: foodMatch ? foodMatch.id : item.id,
+                    name: item.name,
+                    price: item.price || foodMatch?.price || 0,
+                    quantity: item.quantity || item.qty || 0
+                };
+            }).filter(item => item.quantity > 0);
+        }
+    }
+    
+    function showToast(message, type = 'success') {
+        const container = document.getElementById('notificationContainer');
+        if (container) { 
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            
+            setTimeout(() => { toast.classList.add('show'); }, 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                toast.addEventListener('transitionend', () => toast.remove());
+            }, 3000);
+        }
+    }
+
+    function updateCartUI() {
+        const totalItems = cart.reduce((total, item) => total + (item.quantity || 0), 0);
+        if (cartCountElement) cartCountElement.textContent = totalItems;
+
+        const cartItemsList = document.getElementById('cartItems');
+        const cartTotalElement = document.getElementById('cartTotal');
+
+        if (cart.length === 0) {
+            if (cartItemsList) cartItemsList.innerHTML = '<p class="empty-cart-message">Your cart is empty</p>';
+            if (cartTotalElement) cartTotalElement.textContent = '0.00';
+            return;
+        }
+
+        let cartTotalAmount = 0;
+        let itemsHTML = '';
+        
+        cart.forEach(item => {
+            const qty = item.quantity || 0;
+            const price = item.price || 0;
+            const itemTotal = price * qty;
+            cartTotalAmount += itemTotal;
+            
+            itemsHTML += `<div class="cart-item">
+                <div class="item-info"><h4>${item.name}</h4><p class="item-price">₱${price.toFixed(2)} each</p></div>
+                <div class="item-quantity"><span class="quantity">${qty}</span></div>
+                <p class="item-total">₱${itemTotal.toFixed(2)}</p>
+            </div>`;
+        });
+        
+        if (cartItemsList) cartItemsList.innerHTML = itemsHTML;
+        if (cartTotalElement) cartTotalElement.textContent = cartTotalAmount.toFixed(2);
+    }
+    
+    function openCart() {
+        if (cartModal) {
+            loadCartFromLocalStorage();
+            updateCartUI();
+            cartModal.style.display = 'flex';
+        }
+    }
+
+    function closeCartModal() {
+        if (cartModal) cartModal.style.display = 'none';
+    }
+    
+    // --- CHECKOUT / FORM LOGIC ---
+    
+    function showOrderForm() {
+        if (cart.length === 0) {
+            showToast("Your cart is empty!", 'error'); 
+            return;
+        }
+
+        closeCartModal(); 
+        
+        const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        
+        const cartDataString = JSON.stringify(cart);
+        document.getElementById('cartData').value = cartDataString;
+        document.getElementById('orderTotal').value = totalAmount.toFixed(2);
+        
+        let modalSummaryHTML = `<p><strong>Items:</strong></p>`;
+        modalSummaryHTML += `<ul style="list-style: none; padding: 0;">`;
+        cart.forEach(item => {
+            modalSummaryHTML += `<li>${item.quantity}× ${item.name} (₱${(item.price * item.quantity).toFixed(2)})</li>`;
+        });
+        modalSummaryHTML += `</ul>`;
+        modalSummaryHTML += `<p><b>FINAL TOTAL: ₱${totalAmount.toFixed(2)}</b></p>`;
+        
+        document.getElementById("modalOrderSummary").innerHTML = modalSummaryHTML;
+        
+        document.getElementById('checkoutOverlay').style.display = 'flex';
+    }
+
+    function submitFinalOrder() {
+        if (!document.getElementById('customerName').value || 
+            !document.getElementById('customerPhone').value || 
+            !document.getElementById('deliveryAddress').value ||
+            !document.getElementById('paymentMethod').value) {
+            showToast("Please fill in all required customer details.", 'error');
+            return;
+        }
+        
+        const form = document.getElementById('finalOrderForm');
+        const formData = new FormData(form);
+
+        const name = formData.get('customerName');
+        const total = formData.get('orderTotal');
+
+        fetch('submit_order.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Server error or invalid response.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('checkoutOverlay').style.display = 'none';
+            document.getElementById('finalOrderForm').reset();
+
+            if (data.success) {
+                showToast(`Order confirmed, ${name}! Total: ₱${total}. Thank you!`, 'success'); 
+                cart = [];
+                saveCartToLocalStorage();
+                updateCartUI();
+            } else {
+                showToast(`Order failed: ${data.message}`, 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Submission Error:', error);
+            document.getElementById('checkoutOverlay').style.display = 'none';
+            showToast("Network error. Could not connect to the database server.", 'error');
+        });
+    }
+    
+    // --- PAGE INITIALIZATION ---
+    document.addEventListener('DOMContentLoaded', function() {
+        loadCartFromLocalStorage();
+        updateCartUI(); 
+        const cartLink = document.getElementById('cartLink');
+        const closeCart = document.getElementById('closeCart');
+        
+        if (cartLink) {
+            cartLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                openCart();
+            });
+        }
+        if (closeCart) closeCart.addEventListener('click', closeCartModal);
+        
+        window.addEventListener('click', function(event) {
+            const cartModal = document.getElementById('cartModal');
+            if (event.target === cartModal) {
+                closeCartModal();
+            }
+        });
+        handleScroll();
+    });
+  </script>
+</body>
+</html>

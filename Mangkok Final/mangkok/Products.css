@@ -1,0 +1,564 @@
+/* ------------------------------------- */
+/* --- GLOBAL & SHARED LAYOUT STYLES --- */
+/* ------------------------------------- */
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #FCF8ED;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* -------------------------------------- */
+/* --- HEADER: DYNAMIC FUNCTIONALITY (UNIFIED) ---*/
+/* -------------------------------------- */
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px; /* ORIGINAL default large padding */
+    background-color: #FCF8ED;
+    
+    /* FIX: Constrain content width for wide screens by applying max-width here, 
+       even though it's fixed. This prevents stretching. */
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto; /* Centers content within the fixed context */
+    
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    
+    /* Make the header fixed and enable smooth transitions */
+    position: fixed; 
+    top: 0;
+    /* Centering fixed element trick */
+    left: 50%;
+    transform: translateX(-50%);
+    
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+}
+
+/* State 1: SCROLLED DOWN (Shrunken Navbar) */
+.topbar.scrolled {
+    padding: 10px 40px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
+}
+
+/* State 2: MOUSE HOVER (Expand Navbar, Overrides scrolled state) */
+.topbar:hover {
+    padding: 20px 40px; 
+}
+
+/* Shrink Nav Links and Brand when scrolled */
+.topbar.scrolled .brand {
+    font-size: 14px; 
+}
+.topbar.scrolled .brand .icon {
+    font-size: 16px;
+}
+.topbar.scrolled nav a {
+    font-size: 13px; 
+    padding: 6px 10px; 
+}
+
+/* --- CORE NAVIGATION FIXES (UNIFIED) --- */
+
+.brand {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    color: #e36414;
+    font-size: 16px; 
+    transition: all 0.3s ease-in-out; 
+    /* Ensures icon and name stick together */
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+.brand .icon {
+    margin-right: 8px;
+    font-size: 18px; 
+    transition: all 0.3s ease-in-out;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    max-width: 900px; 
+}
+
+nav a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #a94442;
+    font-weight: 500;
+    font-size: 14px; 
+    padding: 8px 12px; 
+    white-space: nowrap;
+    border-radius: 4px;
+    transition: all 0.3s;
+    display: inline-block;
+}
+
+nav a:last-child {
+    margin-left: 40px;
+    padding-right: 12px;
+}
+
+nav a.active {
+    color: #FCF8ED;
+    background-color: #a94442;
+    transform: none;
+}
+
+nav a:hover {
+    color: #FCF8ED;
+    background-color: #e36414;
+    transform: none;
+}
+
+
+.footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #a94442;
+    color: #FCF8ED;
+    font-size: 0.9em;
+}
+
+/* -------------------------------------- */
+/* --- PRODUCTS PAGE SPECIFIC STYLES --- */
+/* -------------------------------------- */
+
+.hero {
+    text-align: center;
+    padding: 60px 20px;
+    /* ADJUSTMENT: PUSH CONTENT DOWN FOR FIXED HEADER */
+    margin-top: 100px;
+}
+
+.hero-text h1 {
+    font-size: 48px;
+    font-weight: bold;
+    margin: 0;
+    color: #e36414;
+}
+.hero-text h2 {
+    font-size: 22px;
+    margin-top: 15px;
+    color: #a94442;
+}
+
+/* FILTER STYLES */
+.filter-controls {
+    padding: 20px 0;
+    background-color: white;
+    border-bottom: 1px solid #f2c48d;
+}
+
+.filter-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.filter-btn {
+    padding: 10px 20px;
+    background: white;
+    border: 1px solid #a94442;
+    color: #a94442;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    background: #e36414;
+    color: white;
+    border-color: #e36414;
+}
+
+.menu-page {
+    padding: 40px 0;
+}
+
+.food-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Food Card Styles */
+.food-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.food-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.food-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 2px solid #f2c48d;
+}
+
+.food-info {
+    padding: 15px;
+    text-align: center;
+}
+
+.food-info h3 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+    color: #a94442;
+}
+
+.food-info p {
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+}
+
+.food-card .add-to-cart {
+    width: 100%;
+    padding: 10px;
+    background: #a94442; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+.food-card .add-to-cart:hover {
+    background: #e36414;
+}
+
+.price {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #e36414;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* GALLERY PAGE SPECIFIC STYLES */
+.gallery-item {
+    cursor: default; 
+}
+
+.gallery-item:hover {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-item img {
+    height: 250px; 
+    transition: transform 0.3s;
+}
+
+.gallery-item img:hover {
+    transform: scale(1.05); 
+}
+
+.gallery-item .food-info {
+    padding: 10px 15px;
+}
+
+.gallery-item h3 {
+    margin: 5px 0;
+    font-size: 1.2rem;
+}
+
+
+/* -------------------------------------- */
+/* --- UNIVERSAL MODAL/CART STYLES (NEW) --- */
+/* -------------------------------------- */
+
+.cart-modal {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-content {
+    background: white;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 10px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-header {
+    background: #a94442; 
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.cart-header h2 {
+    color: white; 
+    margin: 0;
+}
+
+.cart-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.cart-item {
+    display: flex; 
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.item-info h4 {
+    color: #333; 
+    margin: 0;
+}
+.item-price {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.item-quantity {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+.quantity-btn {
+    width: 25px;
+    height: 25px;
+    background: #a94442;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 5px;
+}
+
+.remove-item {
+    background: #e36414; 
+    color: white;
+    border: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.item-total {
+    color: #e36414; 
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.cart-footer {
+    padding: 20px;
+    border-top: 1px solid #eee;
+    text-align: right;
+}
+
+.final-submit-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #e36414;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    text-align: center;
+}
+.final-submit-btn:hover {
+    background-color: #c75010;
+}
+
+/* Order Form Modal Styles */
+.overlay {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+.order-modal {
+    background-color: #fffdf7;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    max-height: 90vh; 
+    overflow-y: auto;
+}
+.order-modal h2 {
+    color: #e36414;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.order-modal label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+}
+/* MODIFIED: Added select for Payment Method styling */
+.order-modal input, .order-modal textarea, .order-modal select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #f2c48d;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+.order-summary-details {
+    background-color: #FCF8ED;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px dashed #e36414;
+}
+.order-summary-details ul {
+    margin: 10px 0 0 0;
+}
+.order-summary-details ul li {
+    font-size: 0.9em;
+    padding: 3px 0;
+    list-style: none;
+}
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #a94442;
+    border: none;
+    background: none;
+}
+
+/* Toast Message Styling */
+#notificationContainer {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2000;
+}
+.toast {
+    background-color: #38761d;
+    color: white;
+    padding: 15px 25px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.5s, transform 0.5s;
+    transform: translateX(100%);
+    min-width: 250px;
+    font-size: 15px;
+}
+.toast.error {
+    background-color: #a94442;
+}
+.toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+
+/* -------------------------------------- */
+/* --- RESPONSIVENESS --- */
+/* -------------------------------------- */
+@media (max-width: 768px) {
+    .topbar {
+        /* Reset positioning for mobile stacking */
+        transform: none;
+        left: 0;
+        max-width: none;
+        
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    /* Ensure padding stays correct on mobile */
+    .topbar, .topbar.scrolled, .topbar:hover {
+        padding: 20px 40px; 
+    }
+    
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 10px;
+    }
+    nav a {
+        margin: 5px 10px 0 0;
+        font-size: 14px;
+    }
+    .hero {
+        margin-top: 110px; 
+        
+        padding: 40px 20px;
+    }
+    .hero-text h1 {
+        font-size: 32px;
+    }
+    .hero-text h2 {
+        font-size: 16px;
+    }
+    
+    .food-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .item-total {
+        width: 100%;
+        text-align: right;
+    }
+}
